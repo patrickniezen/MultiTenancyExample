@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MultiTenancyExample.Web", "src\MultiTenancyExample.Web\MultiTenancyExample.Web.xproj", "{E8735540-4F95-44A9-A673-2CDD34B052CC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{661B6640-8B78-4EF3-BFD2-48C01E3B5F91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
