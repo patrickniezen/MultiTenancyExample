@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MultiTenancyExample.Web.Data;
 using MultiTenancyExample.Web.Middleware;
+using MultiTenancyExample.Web.Util;
 
 namespace MultiTenancyExample.Web
 {
@@ -26,6 +27,13 @@ namespace MultiTenancyExample.Web
             services.AddScoped(DbContextOptionsFactory.CreateForTenantUsingClaims);
             services.AddDbContext<BloggingContext>();
             services.AddMvc();
+
+            services.ConfigureSwaggerGen(
+                options =>
+                {
+                    options.OperationFilter<AddAuthorizationHeaderParameterOperationFilter>();
+                });
+            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -74,6 +82,9 @@ namespace MultiTenancyExample.Web
             });
 
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUi();
         }
     }
 }
