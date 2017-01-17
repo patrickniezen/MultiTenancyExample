@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using MultiTenancyExample.Web.Data;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MultiTenancyExample.Web.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class PostsController : Controller
     {
