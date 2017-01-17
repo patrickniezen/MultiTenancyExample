@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -58,7 +59,8 @@ namespace MultiTenancyExample.Web.Middleware
             {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
+                new Claim(JwtRegisteredClaimNames.Iat, now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+                identity.Claims.Single(c => c.Type == MultitenancyExampleClaimNames.CompanyId)
             };
 
             // Create the JWT and write it to a string
@@ -87,9 +89,13 @@ namespace MultiTenancyExample.Web.Middleware
         private Task<ClaimsIdentity> GetIdentity(string username, string password)
         {
             // DON'T do this in production, obviously!
-            if (username == "TEST" && password == "TEST123")
+            if (username == "user1" && password == "test")
             {
-                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(username, "Token"), new Claim[] { }));
+                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(username, "Token"), new Claim[] { new Claim(MultitenancyExampleClaimNames.CompanyId, "1", ClaimValueTypes.Integer32) }));
+            }
+            if (username == "user2" && password == "test")
+            {
+                return Task.FromResult(new ClaimsIdentity(new System.Security.Principal.GenericIdentity(username, "Token"), new Claim[] { new Claim(MultitenancyExampleClaimNames.CompanyId, "2", ClaimValueTypes.Integer32) }));
             }
 
             // Credentials are invalid, or account doesn't exist

@@ -2,10 +2,12 @@
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MultiTenancyExample.Web.Data;
 using MultiTenancyExample.Web.Middleware;
 
 namespace MultiTenancyExample.Web
@@ -19,6 +21,10 @@ namespace MultiTenancyExample.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddScoped(DbContextOptionsFactory.CreateForTenantUsingClaims);
+            services.AddDbContext<BloggingContext>();
             services.AddMvc();
         }
 

@@ -22,5 +22,12 @@ namespace MultiTenancyExample.Web.Controllers
         {
             return _context.Posts.ToList();
         }
+
+        [HttpPost]
+        public void Post([FromBody]Post post)
+        {
+            _context.Posts.Add(post);
+            _context.SaveChanges();
+        }
     }
 }
